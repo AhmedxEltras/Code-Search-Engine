@@ -3,8 +3,9 @@ from tkinter import filedialog, scrolledtext, ttk
 import os
 import fnmatch
 from difflib import SequenceMatcher
+from datetime import datetime
 
-# Global variable to store selected directories
+# Global variables
 selected_directories = []
 
 def search_code():
@@ -19,15 +20,17 @@ def search_code():
         return
     
     search_method = search_method_var.get()
+    queries = [q.strip() for q in query.split(',')]
     for directory in selected_directories:
-        if search_method == "Wild Card":
-            search_files_with_wildcard(directory, query)
-        elif search_method == "Phrase":
-            search_files_with_phrase(directory, query)
-        elif search_method == "Approximate":
-            search_files_approximate(directory, query)
-        elif search_method == "Boolean":
-            search_files_boolean(directory, query)
+        for q in queries:
+            if search_method == "Wild Card":
+                search_files_with_wildcard(directory, q)
+            elif search_method == "Phrase":
+                search_files_with_phrase(directory, q)
+            elif search_method == "Approximate":
+                search_files_approximate(directory, q)
+            elif search_method == "Boolean":
+                search_files_boolean(directory, q)
 
 def search_files_with_wildcard(directory, query):
     for root, _, files in os.walk(directory):
